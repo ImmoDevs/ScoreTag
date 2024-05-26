@@ -1,0 +1,2 @@
+economy:
+  provider: economyapi # Change this to the economy provider you want to use
