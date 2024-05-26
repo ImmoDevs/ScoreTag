@@ -2,11 +2,10 @@
 
 namespace ImmoDev\Score\Listener;
 
-use Ifera\ScoreHud\event\TagsResolveEvent;
+use Ifera\Scorehud\event\TagsResolveEvent;
 use ImmoDev\Score\Main;
 use pocketmine\event\Listener;
 use pocketmine\player\Player;
-use function count;
 use function explode;
 use function strval;
 
@@ -19,7 +18,7 @@ class TagResolveListener implements Listener {
         $this->plugin = $plugin;
     }
 
-    public function onTagResolve(TagsResolveEvent $event) {
+    public function onTagResolve(TagsResolveEvent $event): void {
         $tag = $event->getTag();
         $player = $event->getPlayer();
         $tags = explode('.', $tag->getName(), 2);
@@ -33,38 +32,61 @@ class TagResolveListener implements Listener {
             case "name":
                 $value = $player->getName();
                 break;
-                
+
             case "ecoapi":
-                $value = (string) $this->plugin->converter($this->plugin->money->myMoney($player));
-                break;
-            
+                $this->plugin->getEconomyProvider()->getMoney($player, function ($balances) use ($tag) {
+                    if ($balances === null) {
+                        $balances = 0.0;
+                    }
+                    $tag->setValue(strval($balances));
+                });
+                return;
+
             case "coinapi":
                 $value = (string) $this->plugin->converter($this->plugin->coin->myCoin($player));
                 break;
-            
+
             case "player":
                 $value = (string) count($player->getServer()->getOnlinePlayers());
                 break;
-            
+
             case "max":
                 $value = (string) $player->getServer()->getMaxPlayers();
                 break;
-                
+
             case "ping":
-                $value = (string) $player->getNetworkSession()->getPing();
+                $ping = $player->getNetworkSession()->getPing();
+                $pingColor = $this->getPingColor($ping);
+                $value = $pingColor . (string) $ping;
                 break;
-            
+
             case "date":
-                $date = date("d-m-Y");
-                $value = (string) $date;
+                $value = date("d-m-Y");
                 break;
-                
+
             case "rank":
-                $rank = $player->getServer()->getPluginManager()->getPlugin("PurePerms")->getUserDataMgr()->getGroup($player)->getName();
-                $value = (string) $rank;
+                $rankSystem = $this->plugin->getServer()->getPluginManager()->getPlugin("RankSystem");
+                if ($rankSystem !== null) {
+                    $rank = $rankSystem->getRank($player)->getName();
+                    $value = (string) $rank;
+                } else {
+                    $value = "N/A";
+                }
                 break;
         }
 
         $tag->setValue(strval($value));
+    }
+
+    private function getPingColor(int $ping): string {
+        if ($ping >= 200) {
+            return "§5";
+        } elseif ($ping >= 100) {
+            return "§c";
+        } elseif ($ping >= 50) {
+            return "§e";
+        } else {
+            return "§a";
+        }
     }
 }
