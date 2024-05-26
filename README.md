@@ -21,10 +21,10 @@ This is a versatile plugin designed to display various player statistics and inf
 - [libPiggyEconomy](https://github.com/DaPigGuy/libPiggyEconomy): A virion for easy support of multiple economy providers.
 
 ## Support
-For any issues or feature requests, please create an issue on the [GitHub repository](https://github.com/ImmoDevs/Score).
+For any issues or feature requests, please create an issue on the [GitHub repository](https://github.com/ImmoDevs/ScoreTag/issues).
 
 ## Contribution
-Contributions are welcome! If you have any improvements or new features to suggest, feel free to open a pull request on the [GitHub repository](https://github.com/ImmoDevs/Score).
+Contributions are welcome! If you have any improvements or new features to suggest, feel free to open a pull request on the [GitHub repository](https://github.com/ImmoDevs/ScoreTag/pulls).
 
 ## License
 This plugin is licensed under the MIT License. See the [LICENSE](https://github.com/ImmoDevs/Score/blob/main/LICENSE) file for details.
