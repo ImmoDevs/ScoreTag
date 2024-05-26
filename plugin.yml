@@ -2,4 +2,6 @@ name: ScoreTag
 main: ImmoDev\Score\Main
 api: 5.0.0
 version: 2.0.0
-author: ImmoDev
+authors:
+- ImmoDevs
+- LuqmanDv
