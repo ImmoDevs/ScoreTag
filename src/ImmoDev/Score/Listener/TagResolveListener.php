@@ -33,7 +33,7 @@ class TagResolveListener implements Listener {
                 $value = $player->getName();
                 break;
 
-            case "ecoapi":
+            case "balances":
                 $this->plugin->getEconomyProvider()->getMoney($player, function ($balances) use ($tag) {
                     if ($balances === null) {
                         $balances = 0.0;
@@ -55,8 +55,18 @@ class TagResolveListener implements Listener {
                 break;
 
             case "ping":
-                $ping = $player->getNetworkSession()->getPing();
-                $pingColor = $this->getPingColor($ping);
+                $ping = (int) $this->plugin->getCustomPing($player);
+                // Mengatur warna berdasarkan ping
+                $pingColor = "§f"; // Default white
+                            if ($ping < 100) {
+                                $pingColor = "§a"; // Green
+                            } elseif ($ping < 200) {
+                                $pingColor = "§e"; // Yellow
+                            } elseif ($ping < 300) {
+                                $pingColor = "§6"; // Orange
+                            } elseif ($ping >= 300) {
+                                $pingColor = "§c"; // Red
+                            }
                 $value = $pingColor . (string) $ping;
                 break;
 
@@ -67,8 +77,13 @@ class TagResolveListener implements Listener {
             case "rank":
                 $rankSystem = $this->plugin->getServer()->getPluginManager()->getPlugin("RankSystem");
                 if ($rankSystem !== null) {
-                    $rank = $rankSystem->getRank($player)->getName();
-                    $value = (string) $rank;
+                    $sessionManager = $rankSystem->getSessionManager();
+                    $rankObjects = $sessionManager->get($player->getName())->getRanks();
+                    $ranks = [];
+                    foreach ($rankObjects as $rankObject) {
+                        $ranks[] = $rankObject->getName();
+                    }
+                    $value = count($ranks) > 0 ? implode(", ", $ranks) : "No Rank";
                 } else {
                     $value = "N/A";
                 }
@@ -76,17 +91,5 @@ class TagResolveListener implements Listener {
         }
 
         $tag->setValue(strval($value));
-    }
-
-    private function getPingColor(int $ping): string {
-        if ($ping >= 200) {
-            return "§5";
-        } elseif ($ping >= 100) {
-            return "§c";
-        } elseif ($ping >= 50) {
-            return "§e";
-        } else {
-            return "§a";
-        }
     }
 }
