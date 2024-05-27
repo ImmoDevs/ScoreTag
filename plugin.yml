@@ -5,3 +5,13 @@ version: 2.0.0
 authors:
 - ImmoDevs
 - LuqmanDv
+
+commands:
+     testping:
+          description: Customing Your Ping
+          permission: testping.use
+
+permissions:
+     testping.use:
+          description: jir
+          default: op
