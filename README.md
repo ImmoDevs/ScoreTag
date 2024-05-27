@@ -17,8 +17,26 @@ This is a versatile plugin designed to display various player statistics and inf
 3. Configure the ScoreHud plugin (if applicable) to display the provided tags.
 4. Enjoy the updated scoreboard or HUD with player statistics!
 
+## Tags List
+You can use the following tags in your ScoreHud configuration:
+
+- **{balances.player}**: Displays the player's balance from the configured economy system.
+- **{coinapi.api}**: Displays the player's coin balance from the CoinAPI plugin.
+- **{player.online}**: Shows the number of online players on the server.
+- **{max.online}**: Shows the maximum number of players allowed on the server.
+- **{ping.player}**: Displays the player's ping with customizable colors:
+  - **Green**: Low ping
+  - **Yellow**: Moderate ping
+  - **Orange**: High ping
+  - **Red**: Very high ping
+- **{name.player}**: Displays the player's name.
+- **{date.score}**: Shows the current date in `d-m-Y` format.
+- **{rank.player}**: Displays the player's rank(s) if using the RankSystem plugin.
+
 ## Dependencies
 - [libPiggyEconomy](https://github.com/DaPigGuy/libPiggyEconomy): A virion for easy support of multiple economy providers.
+- BedrockEconomy or EconomyAPI
+- RankSystem
 
 ## Support
 For any issues or feature requests, please create an issue on the [ScoreTag Issues](https://github.com/ImmoDevs/ScoreTag/issues).
